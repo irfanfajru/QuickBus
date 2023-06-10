@@ -1,6 +1,5 @@
 package com.quickbus.controller;
 
-import com.quickbus.repository.TransaksiRepo;
 import com.quickbus.view.TransaksiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

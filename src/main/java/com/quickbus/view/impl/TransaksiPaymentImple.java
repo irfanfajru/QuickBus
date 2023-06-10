@@ -1,7 +1,6 @@
 package com.quickbus.view.impl;
 
 import com.quickbus.model.oauth.User;
-import com.quickbus.repository.TransaksiRepo;
 import com.quickbus.repository.oauth.UserRepo;
 import com.quickbus.view.TransaksiService;
 import org.springframework.beans.factory.annotation.Autowired;
