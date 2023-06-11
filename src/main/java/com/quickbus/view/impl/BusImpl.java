@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -43,8 +44,21 @@ public class BusImpl implements BusService {
                         "Bus not found"
                 );
 
-            busRepo.save(bus);
-            return new ResponseMap().success(bus,"Succes update bus");
+            Bus updatedBus = obj.get();
+            updatedBus.setName(bus.getName());
+            updatedBus.setType(bus.getType());
+            updatedBus.setCapacity(bus.getCapacity());
+            updatedBus.setSeatFormat(bus.getSeatFormat());
+            updatedBus.setAc(bus.isAc());
+            updatedBus.setEntertainment(bus.isEntertainment());
+            updatedBus.setReclinerSeat(bus.isReclinerSeat());
+            updatedBus.setSmookingRoom(bus.isSmookingRoom());
+            updatedBus.setRestRoom(bus.isRestRoom());
+            updatedBus.setLuggage(bus.isLuggage());
+            updatedBus.setBigLuggage(bus.isBigLuggage());
+            updatedBus.setToilet(bus.isToilet());
+            busRepo.save(updatedBus);
+            return new ResponseMap().success(updatedBus,"Succes update bus");
         }catch (Exception e){
             return new ResponseMap().error(
                     HttpStatus.INTERNAL_SERVER_ERROR,
@@ -52,4 +66,26 @@ public class BusImpl implements BusService {
             );
         }
     }
+
+    @Override
+    public ResponseMap delete(UUID busId){
+        try{
+            Optional<Bus> obj = busRepo.findById(busId);
+            if(!obj.isPresent())
+                return new ResponseMap().error(
+                        HttpStatus.NOT_FOUND,
+                        "Bus not found"
+                );
+            Bus deletedBus = obj.get();
+            deletedBus.setDeletedAt(new Date());
+            busRepo.save(deletedBus);
+            return new ResponseMap().success(deletedBus,"Succes delete bus");
+        }catch (Exception e){
+            return new ResponseMap().error(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Failed to delete bus"
+            );
+        }
+    }
+
 }

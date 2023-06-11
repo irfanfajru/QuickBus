@@ -22,7 +22,7 @@ public class Passenger implements Serializable {
     private String nik;
 
 //    many to one ticket
-    @ManyToOne(targetEntity = Ticket.class)
+    @ManyToOne
     @JoinColumn(name = "ticket_id",referencedColumnName = "id")
     private Ticket ticket;
 }

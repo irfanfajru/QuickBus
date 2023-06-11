@@ -57,7 +57,7 @@ public class Travel implements Serializable {
     private Date deletedAt;
 
 //    many to one bus
-    @ManyToOne(targetEntity = Bus.class)
+    @ManyToOne
     @JoinColumn(name = "bus_id",referencedColumnName = "id")
     private Bus bus;
 }

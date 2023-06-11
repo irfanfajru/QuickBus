@@ -34,12 +34,12 @@ public class Ticket implements Serializable {
     private Date updatedAt;
 
 //    many to one user
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 
 //    many to one travel
-    @ManyToOne(targetEntity = Travel.class)
+    @ManyToOne
     @JoinColumn(name = "travel_id",referencedColumnName = "id")
     private Travel travel;
 }

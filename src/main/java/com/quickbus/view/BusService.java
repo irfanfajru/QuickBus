@@ -9,4 +9,6 @@ import java.util.UUID;
 public interface BusService {
     public ResponseMap save(Bus bus);
     public ResponseMap update(Bus bus, UUID busId);
+
+    public ResponseMap delete(UUID busId);
 }

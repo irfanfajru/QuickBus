@@ -80,15 +80,6 @@ public class User implements UserDetails, Serializable {
     @OneToOne(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private UserDetail userDetail;
 
-//    one to many transaksi peminjam
-    @JsonIgnore
-    @OneToMany(mappedBy = "peminjam",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Transaksi> transaksiPeminjam;
-
-//    one to many transaksi meminjam
-    @JsonIgnore
-    @OneToMany(mappedBy = "meminjam", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Transaksi> transaksiMeminjam;
 
     public Long getId() {
         return id;

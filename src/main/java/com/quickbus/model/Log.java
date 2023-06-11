@@ -28,7 +28,7 @@ public class Log implements Serializable {
     private Date createdAt;
 
 //    Many to one user
-    @ManyToOne(targetEntity = User.class)
+    @ManyToOne
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     private User user;
 }

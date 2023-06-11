@@ -38,6 +38,14 @@ public class BusController {
         return new ResponseEntity<ResponseMap>(response,response.getCode());
     }
 
+    @DeleteMapping("/{busId}")
+    public ResponseEntity<ResponseMap> delete(
+            @PathVariable UUID busId
+    ){
+        ResponseMap response = busService.delete(busId);
+        return new ResponseEntity<ResponseMap>(response,response.getCode());
+    }
+
 //    @GetMapping("/list")
 //    public ResponseEntity<Page<Transaksi>> list(
 //            @RequestParam() Integer page,
