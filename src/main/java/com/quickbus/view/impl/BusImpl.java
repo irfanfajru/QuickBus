@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -84,6 +83,25 @@ public class BusImpl implements BusService {
             return new ResponseMap().error(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Failed to delete bus"
+            );
+        }
+    }
+
+    @Override
+    public ResponseMap getById(UUID busId){
+        try{
+            Optional<Bus> obj = busRepo.findById(busId);
+            if(!obj.isPresent())
+                return new ResponseMap().error(
+                        HttpStatus.NOT_FOUND,
+                        "Bus not found"
+                );
+            Bus busDetail = obj.get();
+            return new ResponseMap().success(busDetail,"Succes get bus detail");
+        }catch (Exception e){
+            return new ResponseMap().error(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Failed to get bus detail"
             );
         }
     }

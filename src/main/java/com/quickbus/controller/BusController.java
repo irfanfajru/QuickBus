@@ -1,6 +1,7 @@
 package com.quickbus.controller;
 
 import com.quickbus.model.Bus;
+import com.quickbus.repository.BusRepo;
 import com.quickbus.response.ResponseMap;
 import com.quickbus.view.BusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class BusController {
 
     @Autowired
     BusService busService;
+
+    @Autowired
+    BusRepo busRepo;
 
     @PostMapping("")
     public ResponseEntity<ResponseMap> save(
@@ -46,18 +50,26 @@ public class BusController {
         return new ResponseEntity<ResponseMap>(response,response.getCode());
     }
 
-//    @GetMapping("/list")
-//    public ResponseEntity<Page<Transaksi>> list(
-//            @RequestParam() Integer page,
-//            @RequestParam() Integer size,
-//            @RequestParam(required = false) String status){
-//        Pageable showData = PageRequest.of(page,size);
-//        Page<Transaksi> list = null;
-//        if(status!=null){
-//            list = transaksiRepo.findByStatusLike("%"+status+"%",showData);
-//        }else{
-//            list = transaksiRepo.findAll(showData);
-//        }
-//        return new ResponseEntity<Page<Transaksi>>(list,new HttpHeaders(), HttpStatus.OK);
-//    }
+    @GetMapping("")
+    public ResponseEntity<Page<Bus>> list(
+            @RequestParam() Integer page,
+            @RequestParam() Integer size,
+            @RequestParam(required = false) String name
+            ){
+        Pageable showData = PageRequest.of(page,size);
+        Page<Bus> list = null;
+        if(name!=null){
+            list = busRepo.findByNameLike("%"+name+"%",showData);
+        }else{
+            list = busRepo.findAll(showData);
+        }
+        return new ResponseEntity<Page<Bus>>(list,new HttpHeaders(), HttpStatus.OK);
+    }
+    @GetMapping("/{busId}")
+    public ResponseEntity<ResponseMap> busDetail(
+            @PathVariable UUID busId
+    ){
+        ResponseMap response = busService.getById(busId);
+        return new ResponseEntity<ResponseMap>(response,response.getCode());
+    }
 }
