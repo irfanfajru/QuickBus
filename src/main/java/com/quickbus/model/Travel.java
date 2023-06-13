@@ -1,60 +1,51 @@
 package com.quickbus.model;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Data
 @Entity
 @Table(name="travel")
-public class Travel implements Serializable {
+//@Where(clause = "deleted_at is null")
+public class Travel extends AbstractDate implements Serializable {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",insertable = false,updatable = false,nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "departure")
+    @Column(name = "departure",nullable = false)
     private String departure;
 
     @Column(name = "departure_location",columnDefinition = "text")
     private String departureLocation;
 
-    @Column(name = "departure_at",columnDefinition = "timestamp")
-    private Date departureAt;
+    @Column(name = "departure_date",nullable = false)
+    private LocalDate departureDate;
 
-    @Column(name = "arrival")
+    @Column(name = "departure_time",nullable = false)
+    private LocalTime departureTime;
+
+    @Column(name = "arrival" ,nullable = false)
     private String arrival;
 
     @Column(name = "arrival_location",columnDefinition = "text")
     private String arrivalLocation;
 
-    @Column(name = "arrival_at",columnDefinition = "timestamp")
-    private Date arrivalAt;
+    @Column(name = "arrival_date",nullable = false)
+    private LocalDate arrivalDate;
 
-    @Column(name = "duration")
-    private String duration;
+    @Column(name = "arrival_time",nullable = false)
+    private LocalTime arrivalTime;
 
-    @Column(name = "price")
+    @Column(name = "price",nullable = false)
     private Double price;
 
     @Column(name = "available_seat")
     private int availableSeat;
-
-    @Column(name = "created_at")
-    @CreationTimestamp
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private Date updatedAt;
-
-    @Column(name = "deleted_at")
-    private Date deletedAt;
 
 //    many to one bus
     @ManyToOne

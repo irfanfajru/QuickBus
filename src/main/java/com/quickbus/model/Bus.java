@@ -1,18 +1,15 @@
 package com.quickbus.model;
 
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.UUID;
 
 @Data
 @Entity
 @Table(name="bus")
-public class Bus implements Serializable {
+//@Where(clause = "deleted_at is null")
+public class Bus extends AbstractDate implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id", insertable = false, updatable = false, nullable = false)
@@ -53,16 +50,4 @@ public class Bus implements Serializable {
 
     @Column(name = "toilet")
     private boolean toilet = false;
-
-    @Column(name = "created_at",updatable = false)
-    @CreationTimestamp
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private Date updatedAt;
-
-    @Column(name = "deleted_at")
-    private Date deletedAt;
-
 }
