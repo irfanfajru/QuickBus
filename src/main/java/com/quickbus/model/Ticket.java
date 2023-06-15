@@ -15,15 +15,18 @@ import java.util.UUID;
 @Table(name = "ticket")
 public class Ticket implements Serializable {
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",insertable = false,updatable = false,nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "price")
+    @Column(name = "price",nullable = false)
     private Double price;
 
+    @Column(name = "passenger",nullable = false)
+    private int passenger;
+
     @Column(name = "status")
-    private String status;
+    private String status = "pending";
 
     @Column(name = "created_at")
     @CreationTimestamp

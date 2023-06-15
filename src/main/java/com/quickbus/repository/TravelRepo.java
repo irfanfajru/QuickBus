@@ -8,6 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,5 +18,7 @@ public interface TravelRepo extends PagingAndSortingRepository<Travel, UUID> {
     public Optional<Travel> findById(@Param("id") UUID id);
     @Query("select c from Travel c where c.departure like :departure and c.arrival like :arrival and c.departureDate=:departureDate and c.deletedAt is null")
     public Page<Travel> findTravel(@Param("departure") String departure, @Param("arrival") String arrival, @Param("departureDate") LocalDate departureDate, Pageable pageable);
+    @Query("select c from Travel c where c.id = :id and c.departureDate >= :date and c.deletedAt is null")
+    public Optional<Travel> checkAvailTravel(@Param("id") UUID id, @Param("date") LocalDate date);
 
 }

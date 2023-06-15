@@ -76,7 +76,6 @@ public class User implements UserDetails, Serializable {
     private List<Role> roles = new ArrayList<>();
 
     //    one to one user detail
-    @JsonIgnore
     @OneToOne(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private UserDetail userDetail;
 
@@ -152,6 +151,7 @@ public class User implements UserDetails, Serializable {
         this.isActive = enabled;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return isActive;
