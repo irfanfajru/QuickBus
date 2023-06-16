@@ -54,10 +54,10 @@ public class TicketImpl implements TicketService {
 //            set price
             ticket.setPrice(ticket.getPassenger()*travelObj.get().getPrice());
 //            check passengers
-            if(ticket.getPassengerList().size()>ticket.getPassenger()){
+            if(ticket.getPassengerList().size()!=ticket.getPassenger()){
                 return new ResponseMap().error(
                     HttpStatus.BAD_REQUEST,
-                        "Only "+ticket.getPassenger()+" passenger"
+                        "Number of passengers must be "+ticket.getPassenger()
                 );
             }
 
