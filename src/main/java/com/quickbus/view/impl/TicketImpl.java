@@ -3,6 +3,7 @@ package com.quickbus.view.impl;
 import com.quickbus.model.Passenger;
 import com.quickbus.model.Ticket;
 import com.quickbus.model.Travel;
+import com.quickbus.model.oauth.User;
 import com.quickbus.repository.PassengerRepo;
 import com.quickbus.repository.TicketRepo;
 import com.quickbus.repository.TravelRepo;
@@ -108,10 +109,10 @@ public class TicketImpl implements TicketService {
     }
 
     @Override
-    public ResponseMap delete(UUID ticketId){
+    public ResponseMap delete(UUID ticketId, User user){
         try {
 //            check ticket id
-            Optional<Ticket> ticketObj = ticketRepo.findById(ticketId);
+            Optional<Ticket> ticketObj = ticketRepo.findByIdAndUserId(ticketId, user.getId());
             if(!ticketObj.isPresent()){
                 return new ResponseMap().error(
                         HttpStatus.NOT_FOUND,
@@ -122,13 +123,13 @@ public class TicketImpl implements TicketService {
             if (!ticketObj.get().getStatus().equals("pending")){
                 throw new Exception();
             }
-
             ticketRepo.deleteById(ticketId);
             return new ResponseMap().success(
-                    ticketObj.get(),
+                    null,
                     "Success delete ticket"
             );
         }catch (Exception e){
+            e.printStackTrace();
             return new ResponseMap().error(
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "Failed to delete ticket"
@@ -137,10 +138,9 @@ public class TicketImpl implements TicketService {
     }
 
     @Override
-    public ResponseMap getTicketDetail(UUID ticketId){
+    public ResponseMap getTicketDetail(UUID ticketId, User user){
         try {
-//            check ticket id
-            Optional<Ticket> ticketObj = ticketRepo.findById(ticketId);
+            Optional<Ticket> ticketObj = ticketRepo.findByIdAndUserId(ticketId,user.getId());
             if(!ticketObj.isPresent()){
                 return new ResponseMap().error(
                         HttpStatus.NOT_FOUND,

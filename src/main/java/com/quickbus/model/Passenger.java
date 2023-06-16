@@ -27,7 +27,7 @@ public class Passenger implements Serializable {
 
 //    many to one ticket
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ticket_id",referencedColumnName = "id")
     private Ticket ticket;
 }
