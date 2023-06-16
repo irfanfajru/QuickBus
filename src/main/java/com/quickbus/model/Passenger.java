@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -16,9 +17,11 @@ public class Passenger implements Serializable {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
 
+    @NotBlank
     @Column(name = "name",nullable = false)
     private String name;
 
+    @NotBlank
     @Column(name = "nik",nullable = false)
     private String nik;
 

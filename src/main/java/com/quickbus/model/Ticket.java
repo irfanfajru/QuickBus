@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -20,9 +21,11 @@ public class Ticket implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Positive
     @Column(name = "price",nullable = false)
     private Double price;
 
+    @Positive
     @Column(name = "passenger",nullable = false)
     private int passenger;
 

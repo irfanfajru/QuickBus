@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
@@ -30,6 +31,7 @@ public class TravelController {
 
     @PostMapping("")
     public ResponseEntity<ResponseMap> save(
+            @Valid
             @RequestBody Travel travel
             ){
         ResponseMap response = travelService.save(travel);
@@ -38,6 +40,7 @@ public class TravelController {
 
     @PutMapping("/{travelId}")
     public ResponseEntity<ResponseMap> update(
+            @Valid
             @RequestBody Travel travel,
             @PathVariable UUID travelId
             ){

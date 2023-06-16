@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -27,6 +28,7 @@ public class BusController {
 
     @PostMapping("")
     public ResponseEntity<ResponseMap> save(
+            @Valid
             @RequestBody Bus bus
             ){
         ResponseMap response = busService.save(bus);
@@ -35,6 +37,7 @@ public class BusController {
 
     @PutMapping("/{busId}")
     public ResponseEntity<ResponseMap> update(
+            @Valid
             @RequestBody Bus bus,
             @PathVariable UUID busId
             ){

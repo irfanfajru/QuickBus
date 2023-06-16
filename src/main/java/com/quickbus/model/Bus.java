@@ -2,6 +2,8 @@ package com.quickbus.model;
 
 import lombok.Data;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -15,15 +17,19 @@ public class Bus extends AbstractDate implements Serializable {
     @Column(name="id", insertable = false, updatable = false, nullable = false)
     private UUID id;
 
+    @NotBlank
     @Column(name="name",nullable = false)
     private String name;
 
+    @NotBlank
     @Column(name="type",nullable = false)
     private String type;
 
+    @Positive
     @Column(name="capacity",nullable = false)
     private int capacity;
 
+    @NotBlank
     @Column(name="seat_format", nullable = false)
     private String seatFormat;
 

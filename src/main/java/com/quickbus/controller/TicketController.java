@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -33,6 +34,7 @@ public class TicketController {
 
     @PostMapping("")
     public ResponseEntity<ResponseMap> save(
+            @Valid
             @RequestBody Ticket ticket,
             HttpServletRequest request
             ){
@@ -44,6 +46,7 @@ public class TicketController {
 
     @PutMapping("/{ticketId}")
     public ResponseEntity<ResponseMap> updateStatus(
+            @Valid
             @PathVariable UUID ticketId,
             @RequestParam String status
             ){
