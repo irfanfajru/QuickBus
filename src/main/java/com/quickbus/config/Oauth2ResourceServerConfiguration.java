@@ -1,6 +1,7 @@
 package com.quickbus.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
@@ -33,10 +34,9 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
                 .authorizeRequests()
                     .antMatchers("/","/showFile/**","/v1/showFile/**","/v1/upload", "/user-register/**","/forget-password/**", "/oauth/authorize**", "/login**", "/error**")
                     .permitAll()
-                .antMatchers("/v1/role-test-global/list-barang").hasAnyAuthority("ROLE_READ")
-                .antMatchers("/v1/role-test-global/post-barang").hasAnyAuthority("ROLE_WRITE")
-                .antMatchers("/v1/role-test-global/post-barang-user").hasAnyAuthority("ROLE_USER")
-                .antMatchers("/v1/role-test-global/post-barang-admin").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/v1/bus").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/v1/travel").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/v1/ticket").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
                 .and()
                 .authorizeRequests()
                     .anyRequest()
