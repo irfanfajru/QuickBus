@@ -1,7 +1,9 @@
 package com.quickbus.view.impl;
 
+import com.quickbus.model.Passenger;
 import com.quickbus.model.Ticket;
 import com.quickbus.model.Travel;
+import com.quickbus.repository.PassengerRepo;
 import com.quickbus.repository.TicketRepo;
 import com.quickbus.repository.TravelRepo;
 import com.quickbus.response.ResponseMap;
@@ -22,6 +24,9 @@ public class TicketImpl implements TicketService {
 
     @Autowired
     public TravelRepo travelRepo;
+
+    @Autowired
+    public PassengerRepo passengerRepo;
 
     @Override
     public ResponseMap save(Ticket ticket) {
@@ -48,7 +53,21 @@ public class TicketImpl implements TicketService {
             ticket.setTravel(travelObj.get());
 //            set price
             ticket.setPrice(ticket.getPassenger()*travelObj.get().getPrice());
+//            check passengers
+            if(ticket.getPassengerList().size()>ticket.getPassenger()){
+                return new ResponseMap().error(
+                    HttpStatus.BAD_REQUEST,
+                        "Only "+ticket.getPassenger()+" passenger"
+                );
+            }
+
             Ticket createdTicket = ticketRepo.save(ticket);
+//            create passenger
+            for(int i=0;i<ticket.getPassengerList().size();i++){
+                Passenger passengerInput = ticket.getPassengerList().get(i);
+                passengerInput.setTicket(createdTicket);
+                passengerRepo.save(passengerInput);
+            }
 
             return new ResponseMap().success(
                     createdTicket,

@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -45,4 +46,8 @@ public class Ticket implements Serializable {
     @ManyToOne
     @JoinColumn(name = "travel_id",referencedColumnName = "id")
     private Travel travel;
+
+//    one to many passenger
+    @OneToMany(mappedBy = "ticket")
+    private List<Passenger> passengerList;
 }
