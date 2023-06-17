@@ -35,22 +35,17 @@ public class TicketController {
     @PostMapping("/ticket")
     public ResponseEntity<ResponseMap> save(
             @Valid
-            @RequestBody Ticket ticket,
-            HttpServletRequest request
+            @RequestBody Ticket ticket
             ){
-        User user = userRepo.findOneByUsername(request.getUserPrincipal().getName());
-        ticket.setUser(user);
         ResponseMap response = ticketService.save(ticket);
         return new ResponseEntity<ResponseMap>(response,response.getCode());
     }
 
     @DeleteMapping("/ticket/{ticketId}")
     public ResponseEntity<ResponseMap> delete(
-            @PathVariable UUID ticketId,
-            HttpServletRequest request
+            @PathVariable UUID ticketId
     ){
-        User user = userRepo.findOneByUsername(request.getUserPrincipal().getName());
-        ResponseMap response = ticketService.deleteUserTicket(ticketId,user);
+        ResponseMap response = ticketService.deleteUserTicket(ticketId);
         return new ResponseEntity<ResponseMap>(response,response.getCode());
     }
 
@@ -59,10 +54,8 @@ public class TicketController {
             @PathVariable UUID ticketId,
             HttpServletRequest request
     ){
-//        get auth user
-        User user = userRepo.findOneByUsername(request.getUserPrincipal().getName());
 //        get ticket detail
-        ResponseMap response = ticketService.getUserTicketDetail(ticketId,user);
+        ResponseMap response = ticketService.getUserTicketDetail(ticketId);
         return new ResponseEntity<ResponseMap>(response,response.getCode());
     }
 

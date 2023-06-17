@@ -38,6 +38,7 @@ public class Oauth2ResourceServerConfiguration extends ResourceServerConfigurerA
                 .antMatchers("/v1/travel").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/v1/ticket").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
                 .antMatchers("/v1/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/v1/log").hasAnyAuthority("ROLE_ADMIN")
                 .and()
                 .authorizeRequests()
                     .anyRequest()

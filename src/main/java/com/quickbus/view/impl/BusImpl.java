@@ -4,6 +4,7 @@ import com.quickbus.model.Bus;
 import com.quickbus.repository.BusRepo;
 import com.quickbus.response.ResponseMap;
 import com.quickbus.view.BusService;
+import com.quickbus.view.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,10 +20,14 @@ public class BusImpl implements BusService {
     @Autowired
     public BusRepo busRepo;
 
+    @Autowired
+    public LogService logService;
+
     @Override
     public ResponseMap save(Bus bus){
         try{
             Bus obj = busRepo.save(bus);
+            logService.createActivity(obj.toString());
             return new ResponseMap().success(obj,"Success create bus");
 
         }catch(Exception e){
@@ -57,7 +62,8 @@ public class BusImpl implements BusService {
             updatedBus.setBigLuggage(bus.isBigLuggage());
             updatedBus.setToilet(bus.isToilet());
             busRepo.save(updatedBus);
-            return new ResponseMap().success(updatedBus,"Succes update bus");
+            logService.updateActivity(updatedBus.toString());
+            return new ResponseMap().success(updatedBus,"Success update bus");
         }catch (Exception e){
             return new ResponseMap().error(
                     HttpStatus.INTERNAL_SERVER_ERROR,
@@ -78,7 +84,8 @@ public class BusImpl implements BusService {
             Bus deletedBus = obj.get();
             deletedBus.setDeletedAt(new Date());
             busRepo.save(deletedBus);
-            return new ResponseMap().success(deletedBus,"Succes delete bus");
+            logService.deleteActivity(deletedBus.toString());
+            return new ResponseMap().success(deletedBus,"Success delete bus");
         }catch (Exception e){
             return new ResponseMap().error(
                     HttpStatus.INTERNAL_SERVER_ERROR,
@@ -97,7 +104,7 @@ public class BusImpl implements BusService {
                         "Bus not found"
                 );
             Bus busDetail = obj.get();
-            return new ResponseMap().success(busDetail,"Succes get bus detail");
+            return new ResponseMap().success(busDetail,"Success get bus detail");
         }catch (Exception e){
             return new ResponseMap().error(
                     HttpStatus.INTERNAL_SERVER_ERROR,

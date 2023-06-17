@@ -5,6 +5,7 @@ import com.quickbus.model.Travel;
 import com.quickbus.repository.BusRepo;
 import com.quickbus.repository.TravelRepo;
 import com.quickbus.response.ResponseMap;
+import com.quickbus.view.LogService;
 import com.quickbus.view.TravelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,8 @@ public class TravelImpl implements TravelService {
 
     @Autowired
     public BusRepo busRepo;
+    @Autowired
+    public LogService logService;
 
     @Override
     public ResponseMap save(Travel travel){
@@ -38,6 +41,7 @@ public class TravelImpl implements TravelService {
             travel.setAvailableSeat(bus.get().getCapacity());
             travel.setBus(bus.get());
             Travel obj = travelRepo.save(travel);
+            logService.createActivity(obj.toString());
             return new ResponseMap().success(obj,"Success create travel");
         }catch (Exception e){
             return new ResponseMap().error(
@@ -81,6 +85,7 @@ public class TravelImpl implements TravelService {
             updatedTravel.setAvailableSeat(travel.getAvailableSeat());
             updatedTravel.setBus(updatedBus);
             travelRepo.save(updatedTravel);
+            logService.updateActivity(updatedTravel.toString());
             return new ResponseMap().success(
               updatedTravel, "Success update travel"
             );
@@ -107,6 +112,7 @@ public class TravelImpl implements TravelService {
             Travel deletedTravel = obj.get();
             deletedTravel.setDeletedAt(new Date());
             travelRepo.save(deletedTravel);
+            logService.deleteActivity(deletedTravel.toString());
             return new ResponseMap().success(
               HttpStatus.OK,
                     "Success delete travel"

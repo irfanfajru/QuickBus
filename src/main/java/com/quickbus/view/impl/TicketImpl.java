@@ -7,10 +7,13 @@ import com.quickbus.model.oauth.User;
 import com.quickbus.repository.PassengerRepo;
 import com.quickbus.repository.TicketRepo;
 import com.quickbus.repository.TravelRepo;
+import com.quickbus.repository.oauth.UserRepo;
 import com.quickbus.response.ResponseMap;
 import com.quickbus.view.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
@@ -29,9 +32,16 @@ public class TicketImpl implements TicketService {
     @Autowired
     public PassengerRepo passengerRepo;
 
+    @Autowired
+    public UserRepo userRepo;
+
     @Override
     public ResponseMap save(Ticket ticket) {
         try {
+//            set user
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepo.findOneByUsername(auth.getName());
+            ticket.setUser(user);
             LocalDate currentDate = LocalDate.now();
             //            check avail travel
             Optional<Travel> travelObj = travelRepo.checkAvailTravel(ticket.getTravel().getId(), currentDate);
@@ -109,8 +119,10 @@ public class TicketImpl implements TicketService {
     }
 
     @Override
-    public ResponseMap deleteUserTicket(UUID ticketId, User user){
+    public ResponseMap deleteUserTicket(UUID ticketId){
         try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepo.findOneByUsername(auth.getName());
 //            check ticket id
             Optional<Ticket> ticketObj = ticketRepo.findByIdAndUserId(ticketId, user.getId());
             if(!ticketObj.isPresent()){
@@ -138,8 +150,11 @@ public class TicketImpl implements TicketService {
     }
 
     @Override
-    public ResponseMap getUserTicketDetail(UUID ticketId, User user){
+    public ResponseMap getUserTicketDetail(UUID ticketId){
         try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepo.findOneByUsername(auth.getName());
+
             Optional<Ticket> ticketObj = ticketRepo.findByIdAndUserId(ticketId,user.getId());
             if(!ticketObj.isPresent()){
                 return new ResponseMap().error(

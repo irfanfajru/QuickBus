@@ -1,9 +1,12 @@
 package com.quickbus.controller;
 
 import com.quickbus.model.Bus;
+import com.quickbus.model.Log;
+import com.quickbus.model.oauth.User;
 import com.quickbus.repository.BusRepo;
 import com.quickbus.response.ResponseMap;
 import com.quickbus.view.BusService;
+import com.quickbus.view.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.UUID;
 
