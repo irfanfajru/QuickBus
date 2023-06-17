@@ -21,7 +21,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/v1/ticket")
+@RequestMapping("/v1")
 public class TicketController {
     @Autowired
     TicketService ticketService;
@@ -32,7 +32,7 @@ public class TicketController {
     @Autowired
     UserRepo userRepo;
 
-    @PostMapping("")
+    @PostMapping("/ticket")
     public ResponseEntity<ResponseMap> save(
             @Valid
             @RequestBody Ticket ticket,
@@ -44,30 +44,30 @@ public class TicketController {
         return new ResponseEntity<ResponseMap>(response,response.getCode());
     }
 
-    @DeleteMapping("/{ticketId}")
+    @DeleteMapping("/ticket/{ticketId}")
     public ResponseEntity<ResponseMap> delete(
             @PathVariable UUID ticketId,
             HttpServletRequest request
     ){
         User user = userRepo.findOneByUsername(request.getUserPrincipal().getName());
-        ResponseMap response = ticketService.delete(ticketId,user);
+        ResponseMap response = ticketService.deleteUserTicket(ticketId,user);
         return new ResponseEntity<ResponseMap>(response,response.getCode());
     }
 
-    @GetMapping("/{ticketId}")
-    public ResponseEntity<ResponseMap> getTicketDetail(
+    @GetMapping("/ticket/{ticketId}")
+    public ResponseEntity<ResponseMap> getUserTicketDetail(
             @PathVariable UUID ticketId,
             HttpServletRequest request
     ){
 //        get auth user
         User user = userRepo.findOneByUsername(request.getUserPrincipal().getName());
 //        get ticket detail
-        ResponseMap response = ticketService.getTicketDetail(ticketId,user);
+        ResponseMap response = ticketService.getUserTicketDetail(ticketId,user);
         return new ResponseEntity<ResponseMap>(response,response.getCode());
     }
 
-    @GetMapping("")
-    public ResponseEntity<Page<Ticket>> getTickets(
+    @GetMapping("/ticket")
+    public ResponseEntity<Page<Ticket>> getUserTickets(
             @RequestParam() Integer page,
             @RequestParam() Integer size,
             HttpServletRequest request
@@ -77,4 +77,24 @@ public class TicketController {
         Page<Ticket> list = ticketRepo.findAllByUserId(user.getId(),showData);
         return new ResponseEntity<Page<Ticket>>(list,new HttpHeaders(), HttpStatus.OK);
     }
+
+//    admin authorize
+    @GetMapping("/admin/ticket/{ticketId}")
+    public ResponseEntity<ResponseMap> getTicketDetail(
+            @PathVariable UUID ticketId
+    ){
+        ResponseMap response = ticketService.getTicketDetail(ticketId);
+        return new ResponseEntity<ResponseMap>(response,response.getCode());
+    }
+
+    @GetMapping("/admin/ticket")
+    public ResponseEntity<Page<Ticket>> getTickets(
+            @RequestParam() Integer page,
+            @RequestParam() Integer size
+    ){
+        Pageable showData = PageRequest.of(page,size);
+        Page<Ticket> list = ticketRepo.findAll(showData);
+        return new ResponseEntity<Page<Ticket>>(list,new HttpHeaders(), HttpStatus.OK);
+    }
+
 }

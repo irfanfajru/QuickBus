@@ -109,7 +109,7 @@ public class TicketImpl implements TicketService {
     }
 
     @Override
-    public ResponseMap delete(UUID ticketId, User user){
+    public ResponseMap deleteUserTicket(UUID ticketId, User user){
         try {
 //            check ticket id
             Optional<Ticket> ticketObj = ticketRepo.findByIdAndUserId(ticketId, user.getId());
@@ -138,7 +138,7 @@ public class TicketImpl implements TicketService {
     }
 
     @Override
-    public ResponseMap getTicketDetail(UUID ticketId, User user){
+    public ResponseMap getUserTicketDetail(UUID ticketId, User user){
         try {
             Optional<Ticket> ticketObj = ticketRepo.findByIdAndUserId(ticketId,user.getId());
             if(!ticketObj.isPresent()){
@@ -159,4 +159,28 @@ public class TicketImpl implements TicketService {
             );
         }
     }
+
+    @Override
+    public ResponseMap getTicketDetail(UUID ticketId){
+        try {
+            Optional<Ticket> ticketObj = ticketRepo.findById(ticketId);
+            if(!ticketObj.isPresent()){
+                return new ResponseMap().error(
+                        HttpStatus.NOT_FOUND,
+                        "Ticket not found"
+                );
+            }
+
+            return new ResponseMap().success(
+                    ticketObj.get(),
+                    "Success get ticket detail"
+            );
+        }catch (Exception e){
+            return new ResponseMap().error(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "Failed to get travel detail"
+            );
+        }
+    }
+
 }
