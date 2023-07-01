@@ -6,4 +6,5 @@ import com.quickbus.response.ResponseMap;
 public interface UserService {
 
     public ResponseMap registerUser(UserRegisterDto user);
+    public ResponseMap getAuthenticatedUser();
 }
