@@ -76,7 +76,7 @@ public class User implements UserDetails, Serializable {
     private List<Role> roles = new ArrayList<>();
 
     //    one to one user detail
-    @OneToOne(mappedBy = "user",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user")
     private UserDetail userDetail;
 
 

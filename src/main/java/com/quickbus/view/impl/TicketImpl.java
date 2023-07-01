@@ -1,5 +1,6 @@
 package com.quickbus.view.impl;
 
+import com.quickbus.model.EmailDetail;
 import com.quickbus.model.Passenger;
 import com.quickbus.model.Ticket;
 import com.quickbus.model.Travel;
@@ -9,6 +10,7 @@ import com.quickbus.repository.TicketRepo;
 import com.quickbus.repository.TravelRepo;
 import com.quickbus.repository.oauth.UserRepo;
 import com.quickbus.response.ResponseMap;
+import com.quickbus.view.EmailService;
 import com.quickbus.view.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,6 +36,9 @@ public class TicketImpl implements TicketService {
 
     @Autowired
     public UserRepo userRepo;
+
+    @Autowired
+    public EmailService emailService;
 
     @Override
     public ResponseMap save(Ticket ticket) {
@@ -80,6 +85,8 @@ public class TicketImpl implements TicketService {
                 passengerRepo.save(passengerInput);
             }
 
+//            send email to user
+            emailService.sendCreatedTicketEmail(createdTicket);
             return new ResponseMap().success(
                     createdTicket,
                     "Success create ticket"

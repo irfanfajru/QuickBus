@@ -1,5 +1,6 @@
 package com.quickbus.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.quickbus.model.oauth.User;
 import lombok.Data;
 
@@ -14,14 +15,17 @@ public class UserDetail implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="nama",nullable = false)
-    private String nama;
+    @Column(name="name",nullable = false)
+    private String name;
 
-    @Column(name="alamat",nullable = false,columnDefinition = "TEXT")
-    private String alamat;
+    @Column(name="address",nullable = false,columnDefinition = "TEXT")
+    private String address;
 
+    @Column(name = "phone",nullable = false)
+    private String phone;
 //    one to one user
+    @JsonIgnore
     @OneToOne
-    @JoinColumn(name="id_user",referencedColumnName = "id")
+    @JoinColumn(name="user_id",referencedColumnName = "id")
     private User user;
 }
